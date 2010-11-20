@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% block header %}
+<script type="text/javascript">
+var selected;
+ $(function(){
+         
+   adjustColumnsAndRows();
+
+   for (var i = 0; i <= 255; i++) {
+		$('#palette_wrapper').append('<div id="palette_'+i+'" class="picker" style="background-image: url(http://moocraft.com/static/images/64x64/tex_'+i+'.png)">&nbsp;</div>');
+   }
+   // set brush   
+   $("#palette_wrapper div").click(function() {
+       selected = $(this);
+   });
+   $("#palette_wrapper div").hover(function() {
+       $(this).css('cursor', 'pointer');
+   });
+   
+   $(window).resize(function() {
+     adjustColumnsAndRows();
+   });
+ });
+</script>
+<script type="text/javascript">
+ function rowCount()
+ {
+     return $('#draw-table tr').length;
+ }
+ 
+ function colCount()
+ {
+     var rowcount = this.rowCount();
+     return $('#draw-table td').length / rowcount;
+ }
+ 
+ /**
+  * add columns to fill the page
+  */
+ function adjustColumnsAndRows()
+ {
+   if ($("#draw-table tr").width() < ($(window).width()))
+   {
+       // we need to add columns
+       while ($("#draw-table tr").width() < ($(window).width() - 64))
+       {
+           var col = this.colCount() + 1;
+           var rowCount = this.rowCount();
+           for (var row = 1; row <= rowCount; row++)
+           {
+               $("#row_" + row)
+                 .append('<td id="cell_'+col+'_'+row+'"></td>');
+           }
+       }
+   }
+   else if ($("#draw-table tr").width() > ($(window).width()))
+   {
+       // we need to remove columns
+       while ($("#draw-table tr").width() > ($(window).width() - 64))
+       {
+           var col = this.colCount();
+           var rowCount = this.rowCount();
+           for (var row = 1; row <= rowCount; row++)
+           {
+               $("#cell_" + col + '_' + row).remove();
+           }
+       }
+   }
+   
+   // setup brush use
+   $("#draw-table td").click(function() {
+       $(this).css('background-image', $(selected).css('background-image'));
+   });
+   $("#draw-table td").hover(function() {
+       $(this).css('cursor', 'pointer');
+   });
+ }
+</script>
+<style type="text/css" media="all">
+body {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	background: black;
+	color: white;
+	font-family: Helvetica, Arial;
+}
+#table-wrapper {
+    text-align: center;
+    margin-top: 64px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    min-width: 600px;
+	clear: both;
+}
+#palette_wrapper {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+}
+table {
+	border-spacing: 0px;
+	border-style: none;
+	border-collapse: separate;
+}
+table th {
+	border-width: 1px;
+	padding: 0px;
+	border-style: solid;
+	border-color: gray;
+	background-color: black;
+}
+table td {
+	border-width: 1px;
+	padding: 0px;
+	border-style: solid;
+	border-color: gray;
+	background-color: black;
+	background-repeat:no-repeat;
+}
+.picker {
+	border-width: 1px;
+	padding: 0px;
+	border-style: solid;
+	border-color: gray;
+	background-color: black;
+	background-repeat:no-repeat;
+	float: left;
+	min-width: 32px;
+	width: 32px;
+	min-height: 32px;
+	height: 32px;
+}
+#draw-table td {
+	min-width: 64px;
+	width: 64px;
+	min-height: 64px;
+	height: 64px;
+}
+#palette_blank {
+    background-image: none;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div id="palette_wrapper">
+	<div id="palette_blank" class="picker">&nbsp;</div>
+<!--table id="palette">
+    <tbody>
+	<tr>
+		<td id="palette_blank"></td>
+	</tr>
+    <tr>
+        <td id="palette_1"></td>
+        <td id="palette_2"></td>
+        <td id="palette_3"></td>
+        <td id="palette_4"></td>
+        <td id="palette_5"></td>
+        <td id="palette_6"></td>
+        <td id="palette_7"></td>
+        <td id="palette_8"></td>
+        <td id="palette_9"></td>
+    </tr>
+    </tbody>
+</table-->
+</div>
+
+<div id="table-wrapper">
+<table id="draw-table">
+    <tbody>
+    <tr id="row_1">
+        <td id="cell_1_1"></td>
+        <td id="cell_1_2"></td>
+        <td id="cell_1_3"></td>
+        <td id="cell_1_4"></td>
+        <td id="cell_1_5"></td>
+        <td id="cell_1_6"></td>
+        <td id="cell_1_7"></td>
+        <td id="cell_1_8"></td>
+        <td id="cell_1_9"></td>
+    </tr>
+    <tr id="row_2">
+        <td id="cell_2_1"></td>
+        <td id="cell_2_2"></td>
+        <td id="cell_2_3"></td>
+        <td id="cell_2_4"></td>
+        <td id="cell_2_5"></td>
+        <td id="cell_2_6"></td>
+        <td id="cell_2_7"></td>
+        <td id="cell_2_8"></td>
+        <td id="cell_2_9"></td>
+    </tr>
+    <tr id="row_3">
+        <td id="cell_3_1"></td>
+        <td id="cell_3_2"></td>
+        <td id="cell_3_3"></td>
+        <td id="cell_3_4"></td>
+        <td id="cell_3_5"></td>
+        <td id="cell_3_6"></td>
+        <td id="cell_3_7"></td>
+        <td id="cell_3_8"></td>
+        <td id="cell_3_9"></td>
+    </tr>
+    <tr id="row_4">
+        <td id="cell_4_1"></td>
+        <td id="cell_4_2"></td>
+        <td id="cell_4_3"></td>
+        <td id="cell_4_4"></td>
+        <td id="cell_4_5"></td>
+        <td id="cell_4_6"></td>
+        <td id="cell_4_7"></td>
+        <td id="cell_4_8"></td>
+        <td id="cell_4_9"></td>
+    </tr>
+    <tr id="row_5">
+        <td id="cell_5_1"></td>
+        <td id="cell_5_2"></td>
+        <td id="cell_5_3"></td>
+        <td id="cell_5_4"></td>
+        <td id="cell_5_5"></td>
+        <td id="cell_5_6"></td>
+        <td id="cell_5_7"></td>
+        <td id="cell_5_8"></td>
+        <td id="cell_5_9"></td>
+    </tr>
+    <tr id="row_6">
+        <td id="cell_6_1"></td>
+        <td id="cell_6_2"></td>
+        <td id="cell_6_3"></td>
+        <td id="cell_6_4"></td>
+        <td id="cell_6_5"></td>
+        <td id="cell_6_6"></td>
+        <td id="cell_6_7"></td>
+        <td id="cell_6_8"></td>
+        <td id="cell_6_9"></td>
+    </tr>
+    <tr id="row_7">
+        <td id="cell_7_1"></td>
+        <td id="cell_7_2"></td>
+        <td id="cell_7_3"></td>
+        <td id="cell_7_4"></td>
+        <td id="cell_7_5"></td>
+        <td id="cell_7_6"></td>
+        <td id="cell_7_7"></td>
+        <td id="cell_7_8"></td>
+        <td id="cell_7_9"></td>
+    </tr>
+    <tr id="row_8">
+        <td id="cell_8_1"></td>
+        <td id="cell_8_2"></td>
+        <td id="cell_8_3"></td>
+        <td id="cell_8_4"></td>
+        <td id="cell_8_5"></td>
+        <td id="cell_8_6"></td>
+        <td id="cell_8_7"></td>
+        <td id="cell_8_8"></td>
+        <td id="cell_8_9"></td>
+    </tr>
+    <tr id="row_9">
+        <td id="cell_9_1"></td>
+        <td id="cell_9_2"></td>
+        <td id="cell_9_3"></td>
+        <td id="cell_9_4"></td>
+        <td id="cell_9_5"></td>
+        <td id="cell_9_6"></td>
+        <td id="cell_9_7"></td>
+        <td id="cell_9_8"></td>
+        <td id="cell_9_9"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+{% endblock %}
